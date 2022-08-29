@@ -1,4 +1,4 @@
-const { ApolloService, gql } = require("apollo-server");
+const { gql, ApolloServer } = require("apollo-server");
 
 const users = [
   { name: "Ana", active: true },
@@ -11,6 +11,23 @@ const typeDefs = gql`
     active: Boolean!
     email: String
   }
+
+  type Query {
+    users: [User]
+  }
 `;
 
-const server = new ApolloService({ typeDefs, resolvers });
+const resolvers = {
+  Query: {
+    users: () => users,
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  csrfPrevention: true,
+  cache: "bounded",
+});
+
+server.listen().then(({ url }) => console.log(`Server ready at ${url}`));
