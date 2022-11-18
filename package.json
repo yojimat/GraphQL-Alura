@@ -1,29 +1,37 @@
 {
-  "name": "roteiro",
+  "name": "graphql-learning",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Repository for learning GraphQL",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon -e js,json,graphql ./api/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon -e ts,js,json,graphql ./api/index.ts",
+    "compile": "tsc",
+    "start:cmp": "npm run compile && node ./dist/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alura-cursos/1922-graphql.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vinícius",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/alura-cursos/1922-graphql/issues"
   },
   "homepage": "https://github.com/alura-cursos/1922-graphql#readme",
   "dependencies": {
+    "@apollo/datasource-rest": "^4.3.2",
+    "@apollo/server": "^4.1.1",
     "@graphql-tools/load-files": "^6.6.1",
-    "@graphql-tools/merge": "^8.3.4",
-    "apollo-server": "^3.10.1",
-    "graphql": "^16.6.0",
-    "json-server": "^0.17.0",
-    "nodemon": "^2.0.19"
+    "@graphql-tools/merge": "^8.3.12",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "json-server": "^0.17.1",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   }
 }
