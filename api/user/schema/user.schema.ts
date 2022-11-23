@@ -12,6 +12,14 @@ type User {
 type Query {
   users: [User]
   firstUser: User
+  user(id: Int!): User
 }
-`
-export default userDefs
+`;
+
+export type User = {
+  name: string;
+  active: boolean;
+  email: string;
+};
+
+export default userDefs;

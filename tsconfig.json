@@ -19,6 +19,7 @@
             "node"
         ]
     },
+    "extends": "./node_modules/@tsconfig/recommended/tsconfig.json",
     "ts-node": {
         "esm": true
     }

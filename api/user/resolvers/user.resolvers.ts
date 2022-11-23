@@ -1,13 +1,27 @@
-const users = [
-  {name: 'Ana', active: true},
-  {name: 'Marcia', active: false},
-];
+import { ContextValue } from '../../';
 
-const userResolvers = {
-  Query: {
-    users: () => users,
-    firstUser: () => users[0],
-  },
+const users = async (_: unknown, __: unknown, { dataSources }: ContextValue) =>
+  await dataSources.usersAPI.getUsers();
+
+const user = async (
+  _: unknown,
+  { id }: { id: number },
+  { dataSources }: ContextValue
+) => await dataSources.usersAPI.getUser(id);
+
+const firstUser = async (
+  _: unknown,
+  __: unknown,
+  { dataSources }: ContextValue
+) => {
+  const users = await dataSources.usersAPI.getUsers();
+  return users[0];
 };
 
-export default userResolvers;
+export default {
+  Query: {
+    users,
+    user,
+    firstUser,
+  },
+};
