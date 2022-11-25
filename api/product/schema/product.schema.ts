@@ -6,6 +6,10 @@ type Product {
 type Query {
   products: [Product]
 }
-`
+`;
+
+export interface Product {
+  name: string;
+}
 
 export default productDefs;
