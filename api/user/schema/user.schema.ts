@@ -21,6 +21,16 @@ type Query {
   firstUser: User
   user(id: ID!): User!
 }
+
+input AddUserParams {
+  name: String!
+  active: Boolean!
+  role: String!
+}
+
+type Mutation {
+  addUser(user: AddUserParams!): User!
+}
 `;
 
 export interface Role {
@@ -31,9 +41,15 @@ export interface Role {
 export interface User {
   name: string;
   active: boolean;
-  email: string;
-  id: number;
+  email?: string;
+  id?: number;
   role: Role;
 }
+
+export type AddUserParams = {
+  name: string;
+  active: boolean;
+  role: string;
+};
 
 export default userDefs;

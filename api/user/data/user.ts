@@ -1,5 +1,5 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import { Role, User } from '../schema/user.schema';
+import { AddUserParams, Role, User } from '../schema/user.schema';
 import { KeyValueCache } from '@apollo/utils.keyvaluecache/src/KeyValueCache';
 
 const JSON_SERVER_URL = 'http://localhost:3000';
@@ -26,6 +26,18 @@ class UsersAPI extends RESTDataSource {
     const user = await this.get<User>(`/users/${encodeURIComponent(id)}`);
     user.role = await this.get<Role>(`/roles/${user.role}`);
     return user;
+  }
+
+  async addUser(userParams: AddUserParams): Promise<User> {
+    const role = await this.get<Role>(
+      `/roles/${encodeURIComponent(userParams.role)}`
+    );
+    const newUser: User = {
+      name: userParams.name,
+      active: userParams.active,
+      role,
+    };
+    return await this.post<User>('/users', { body: newUser });
   }
 }
 
