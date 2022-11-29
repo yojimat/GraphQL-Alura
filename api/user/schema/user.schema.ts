@@ -25,7 +25,7 @@ type Query {
 input AddUserParams {
   name: String!
   active: Boolean!
-  role: String!
+  role: Int!
 }
 
 type Mutation {
@@ -43,13 +43,13 @@ export interface User {
   active: boolean;
   email?: string;
   id?: number;
-  role: Role;
+  role: Role | number;
 }
 
 export type AddUserParams = {
   name: string;
   active: boolean;
-  role: string;
+  role: number;
 };
 
 export default userDefs;

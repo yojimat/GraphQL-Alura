@@ -32,12 +32,17 @@ class UsersAPI extends RESTDataSource {
     const role = await this.get<Role>(
       `/roles/${encodeURIComponent(userParams.role)}`
     );
+
     const newUser: User = {
       name: userParams.name,
       active: userParams.active,
-      role,
+      role: role.id,
     };
-    return await this.post<User>('/users', { body: newUser });
+    const user = await this.post<User>('/users', { body: newUser });
+    return {
+      ...user,
+      role: { ...role },
+    };
   }
 }
 

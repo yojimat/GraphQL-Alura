@@ -1,5 +1,5 @@
 import { ContextValue } from '../../';
-import { AddUserParams, User } from '../schema/user.schema';
+import { AddUserParams } from '../schema/user.schema';
 
 const users = async (_: unknown, __: unknown, { dataSources }: ContextValue) =>
   await dataSources.usersAPI.getUsers();
@@ -21,9 +21,9 @@ const firstUser = async (
 
 const addUser = async (
   _: unknown,
-  { name, active, role }: AddUserParams,
+  { user }: { user: AddUserParams },
   { dataSources }: ContextValue
-) => await dataSources.usersAPI.addUser({ name, active, role });
+) => await dataSources.usersAPI.addUser(user);
 
 export default {
   Query: {
