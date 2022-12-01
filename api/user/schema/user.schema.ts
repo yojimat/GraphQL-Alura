@@ -28,8 +28,18 @@ input AddUserParams {
   role: Int!
 }
 
+input UpdateUserParams {
+  id: ID!
+  name: String
+  active: Boolean
+  role: Int
+  email: String
+}
+
 type Mutation {
-  addUser(user: AddUserParams!): User!
+  addUser(addUserParams: AddUserParams!): User!
+  updateUser(updateUserParams: UpdateUserParams!): User!
+  deleteUser(id: ID!): ID
 }
 `;
 
@@ -50,6 +60,15 @@ export type AddUserParams = {
   name: string;
   active: boolean;
   role: number;
+  email?: string;
+};
+
+export type UpdateUserParams = {
+  id: number;
+  name: string;
+  active: boolean;
+  role: number;
+  email: string;
 };
 
 export default userDefs;

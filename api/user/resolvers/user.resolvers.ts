@@ -1,5 +1,5 @@
 import { ContextValue } from '../../';
-import { AddUserParams } from '../schema/user.schema';
+import { AddUserParams, UpdateUserParams } from '../schema/user.schema';
 
 const users = async (_: unknown, __: unknown, { dataSources }: ContextValue) =>
   await dataSources.usersAPI.getUsers();
@@ -21,9 +21,21 @@ const firstUser = async (
 
 const addUser = async (
   _: unknown,
-  { user }: { user: AddUserParams },
+  { addUserParams }: { addUserParams: AddUserParams },
   { dataSources }: ContextValue
-) => await dataSources.usersAPI.addUser(user);
+) => await dataSources.usersAPI.addUser(addUserParams);
+
+const updateUser = async (
+  _: unknown,
+  { updateUserParams }: { updateUserParams: UpdateUserParams },
+  { dataSources }: ContextValue
+) => await dataSources.usersAPI.updateUser(updateUserParams);
+
+const deleteUser = async (
+  _: unknown,
+  { id }: { id: number },
+  { dataSources }: ContextValue
+) => await dataSources.usersAPI.deleteUser(id);
 
 export default {
   Query: {
@@ -31,5 +43,5 @@ export default {
     user,
     firstUser,
   },
-  Mutation: { addUser },
+  Mutation: { addUser, updateUser, deleteUser },
 };

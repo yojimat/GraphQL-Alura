@@ -1,5 +1,10 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import { AddUserParams, Role, User } from '../schema/user.schema';
+import {
+  AddUserParams,
+  Role,
+  UpdateUserParams,
+  User,
+} from '../schema/user.schema';
 import { KeyValueCache } from '@apollo/utils.keyvaluecache/src/KeyValueCache';
 
 const JSON_SERVER_URL = 'http://localhost:3000';
@@ -28,14 +33,14 @@ class UsersAPI extends RESTDataSource {
     return user;
   }
 
-  async addUser(userParams: AddUserParams): Promise<User> {
+  async addUser(addUserParams: AddUserParams): Promise<User> {
     const role = await this.get<Role>(
-      `/roles/${encodeURIComponent(userParams.role)}`
+      `/roles/${encodeURIComponent(addUserParams.role)}`
     );
 
     const newUser: User = {
-      name: userParams.name,
-      active: userParams.active,
+      name: addUserParams.name,
+      active: addUserParams.active,
       role: role.id,
     };
     const user = await this.post<User>('/users', { body: newUser });
@@ -43,6 +48,31 @@ class UsersAPI extends RESTDataSource {
       ...user,
       role: { ...role },
     };
+  }
+
+  async updateUser(updateUserParams: UpdateUserParams) {
+    const { id } = updateUserParams;
+    const role = await this.get<Role>(
+      `/roles/${encodeURIComponent(updateUserParams.role)}`
+    );
+    const updatedUser: User = {
+      name: updateUserParams.name,
+      active: updateUserParams.active,
+      role: role.id,
+      email: updateUserParams.email,
+    };
+    const user = await this.patch<User>(`/users/${id}`, {
+      body: { ...updatedUser },
+    });
+    return {
+      ...user,
+      role: { ...role },
+    };
+  }
+
+  async deleteUser(id: number) {
+    await this.delete(`/users/${encodeURIComponent(id)}`);
+    return id;
   }
 }
 
