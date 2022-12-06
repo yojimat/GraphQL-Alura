@@ -1,13 +1,6 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "Ana Torre",
-      "active": true,
-      "email": "a@a.com",
-      "role": 1
-    },
-    {
       "id": 2,
       "name": "Gabriel Costa",
       "active": true,
@@ -93,13 +86,7 @@
       "name": "test",
       "active": false,
       "role": 2,
-      "id": 18
-    },
-    {
-      "name": "test",
-      "active": false,
-      "role": 2,
-      "id": 19
+      "id": 20
     }
   ],
   "roles": [
