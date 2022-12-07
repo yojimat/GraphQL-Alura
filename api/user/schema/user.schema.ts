@@ -17,6 +17,12 @@ type Role {
   type: String!
 }
 
+enum RolesType {
+  ESTUDANTE
+  DOCENTE
+  COORDENACAO
+}
+
 # The "Query" type is special: it lists all of the available queries that
 # clients can execute, along with the return type for each.
 type Query {
@@ -28,14 +34,14 @@ type Query {
 input AddUserParams {
   name: String!
   active: Boolean!
-  role: Int!
+  role: RolesType!
 }
 
 input UpdateUserParams {
   id: ID!
   name: String
   active: Boolean
-  role: Int
+  role: RolesType
   email: String
 }
 
@@ -52,6 +58,12 @@ export interface Role {
   type: string;
 }
 
+export enum RolesType {
+  ESTUDANTE = 1,
+  DOCENTE,
+  COORDENACAO,
+}
+
 export interface User {
   name: string;
   active: boolean;
@@ -64,7 +76,7 @@ export interface User {
 export type AddUserParams = {
   name: string;
   active: boolean;
-  role: number;
+  role: RolesType;
   email?: string;
 };
 
@@ -72,7 +84,7 @@ export type UpdateUserParams = {
   id: number;
   name: string;
   active: boolean;
-  role: number;
+  role: RolesType;
   email: string;
 };
 

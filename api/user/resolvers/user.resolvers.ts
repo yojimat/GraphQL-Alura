@@ -67,6 +67,11 @@ const DateScalar = new GraphQLScalarType({
 });
 
 export default {
+  RolesType: {
+    ESTUDANTE: 1,
+    DOCENTE: 2,
+    COORDENACAO: 3,
+  },
   Date: DateScalar,
   Query: {
     users,
