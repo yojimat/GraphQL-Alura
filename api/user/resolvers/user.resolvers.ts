@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from 'graphql';
+import { GraphQLScalarType, Kind } from 'graphql';
 import { ContextValue } from '../../';
 import { AddUserParams, UpdateUserParams } from '../schema/user.schema';
 
@@ -51,22 +51,23 @@ const deleteLastUser = async (
   return await dataSources.usersAPI.deleteUser(id);
 };
 
-type AST = {
-  value: string;
-};
-
-const DateTime = new GraphQLScalarType({
+const DateScalar = new GraphQLScalarType({
   name: 'DateTime',
   description: 'Date custom scalar type',
   // Serialize the value that came from the a data source.
-  serialize: (value: unknown) => (value as Date).toISOString(),
+  serialize: (value: unknown) => value,
   // When receiving the value from the client, it will be parsed by this function
   parseValue: (value: unknown) => new Date(value as string),
-  parseLiteral: (ast: unknown) => new Date((ast as AST).value),
+  parseLiteral(ast) {
+    if (ast.kind === Kind.INT) return new Date(parseInt(ast.value, 10));
+    if (ast.kind === Kind.STRING) return new Date(ast.value);
+    // Invalid hard-coded value (not an Interger nor String)
+    return null;
+  },
 });
 
 export default {
-  DateTime,
+  Date: DateScalar,
   Query: {
     users,
     user,

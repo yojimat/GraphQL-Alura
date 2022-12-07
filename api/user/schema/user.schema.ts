@@ -1,7 +1,7 @@
 const userDefs = `#graphql
 # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 # This "User" type defines the queryable fields for every user in our data source.
-scalar DateTime
+scalar Date
 
 type User {
   name: String!
@@ -9,7 +9,7 @@ type User {
   role: Role!
   id: ID!
   email: String
-  createdAt: DateTime
+  createdAt: Date
 }
 
 type Role {
@@ -58,6 +58,7 @@ export interface User {
   email?: string;
   id?: number;
   role: Role | number;
+  createdAt?: Date;
 }
 
 export type AddUserParams = {

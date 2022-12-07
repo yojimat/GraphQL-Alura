@@ -42,6 +42,7 @@ class UsersAPI extends RESTDataSource {
       name: addUserParams.name,
       active: addUserParams.active,
       role: role.id,
+      createdAt: new Date(),
     };
     const user = await this.post<User>('/users', { body: newUser });
     return {
