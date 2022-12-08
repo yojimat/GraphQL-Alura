@@ -23,14 +23,20 @@ enum RolesType {
   COORDENACAO
 }
 
+# An example of union, it does not makes sense
+union SearchResult = User | Role
+
 # The "Query" type is special: it lists all of the available queries that
 # clients can execute, along with the return type for each.
 type Query {
+  searchUsersRoles(roleSearchString: String!): [SearchResult!]
   users: [User]
   firstUser: User
   user(id: ID!): User!
 }
 
+# This schema could be refactored to be like the UpdateUserParams.
+# Using the an unique input for both of them and excluding the ID.
 input AddUserParams {
   name: String!
   active: Boolean!
@@ -47,9 +53,27 @@ input UpdateUserParams {
 
 type Mutation {
   addUser(addUserParams: AddUserParams!): User!
-  updateUser(updateUserParams: UpdateUserParams!): User!
-  deleteUser(id: ID!): ID
-  deleteLastUser: ID
+  updateUser(updateUserParams: UpdateUserParams!): updateUserResponse!
+  deleteUser(id: ID!): deleteUserResponse!
+  deleteLastUser: deleteUserResponse!
+}
+
+interface response {
+  # Abstract Type
+  code: Int!
+  message: String!
+}
+
+# Examples of the uses of an interface 
+type deleteUserResponse implements response {
+  code: Int!
+  message: String!
+}
+
+type updateUserResponse implements response {
+  code: Int!
+  message: String!
+  user: User!
 }
 `;
 

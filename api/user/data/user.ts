@@ -66,14 +66,25 @@ class UsersAPI extends RESTDataSource {
       body: { ...updatedUser },
     });
     return {
-      ...user,
-      role: { ...role },
+      code: 200,
+      message: `User ${id} was updated`,
+      user: {
+        ...user,
+        role: { ...role },
+      },
     };
   }
 
   async deleteUser(id: number) {
     await this.delete(`/users/${encodeURIComponent(id)}`);
-    return id;
+    return {
+      code: 204,
+      message: `User ${id} deleted`,
+    };
+  }
+
+  async getRoles() {
+    return this.get<Role[]>('/roles');
   }
 }
 

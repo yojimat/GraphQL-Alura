@@ -1,6 +1,11 @@
 import { GraphQLScalarType, Kind } from 'graphql';
 import { ContextValue } from '../../';
-import { AddUserParams, UpdateUserParams } from '../schema/user.schema';
+import {
+  AddUserParams,
+  Role,
+  UpdateUserParams,
+  User,
+} from '../schema/user.schema';
 
 const users = async (_: unknown, __: unknown, { dataSources }: ContextValue) =>
   await dataSources.usersAPI.getUsers();
@@ -66,6 +71,33 @@ const DateScalar = new GraphQLScalarType({
   },
 });
 
+const SearchResult = {
+  __resolveType(obj: User & Role) {
+    if (obj.type) return 'Role';
+    if (obj.id) return 'User';
+    return null; // GraphQLError
+  },
+};
+
+const searchUsersRoles = async (
+  _: unknown,
+  { roleSearchString }: { roleSearchString: string },
+  { dataSources }: ContextValue
+) => {
+  const roles = await dataSources.usersAPI.getRoles();
+  const users = await dataSources.usersAPI.getUsers();
+  const filteredRoles = roles.filter((r) => r.type.includes(roleSearchString));
+  const filteredUsers = [];
+  for (const user of users) {
+    const userRole = (await user).role;
+    if (typeof userRole === 'number')
+      throw new Error('role of the user is not an object');
+    if (userRole.type.includes(roleSearchString))
+      filteredUsers.push(await user);
+  }
+  return [...filteredRoles, ...filteredUsers];
+};
+
 export default {
   RolesType: {
     ESTUDANTE: 1,
@@ -74,9 +106,11 @@ export default {
   },
   Date: DateScalar,
   Query: {
+    searchUsersRoles,
     users,
     user,
     firstUser,
   },
   Mutation: { addUser, updateUser, deleteUser, deleteLastUser },
+  SearchResult,
 };
